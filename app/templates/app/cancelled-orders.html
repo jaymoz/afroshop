@@ -1,0 +1,121 @@
+{% extends 'app/dashboard_link.html' %}
+{% load static %}
+{% block content %}
+       
+<section  style="margin-top: 100px; margin-bottom:100px;"> 
+    <div class="u-s-p-b-60">
+        <div class="section__content">
+            <div class="dash">
+                <div class="container">
+                    <div class="row">
+                        {% include 'app/dash-include.html' %}
+
+                    <div class="col-lg-9 col-md-12">
+                        <div class="dash__box dash__box--shadow dash__box--radius dash__box--bg-white u-s-m-b-30">
+                        <div class="dash__box dash__box--shadow dash__box--bg-white dash__box--radius">
+                            <h2 class="dash__h2 u-s-p-xy-20"><b>Cancelled orders</b></h2>
+                                <div class="dash__table-wrap gl-scroll">
+                                    <table class="dash__table">
+                                        <thead>
+                                            <tr>
+                                                <th>Order #</th>
+                                                <th>ref code</th>
+                                                <th>Ordered date</th>
+                                                <th>Status</th>
+                                                <th>Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for order in cancelled_orders %}
+                                            <tr>
+                                                <td>{{order.id}}</td>
+                                                <td>{{order.ref_code}}</td>
+                                                <td>{{order.ordered_date}}</td>
+                                                <td><span class="manage-o__badge badge--delivered">Cancelled</span></td>
+                                                <td>
+                                                    <div class="dash__table-total">
+                                            
+                                                        <span>₽{{order.get_total}}</span>
+                                                        <div class="dash__link dash__link--brand">
+                                            
+                                                            <a href="{% url 'order-detail' order.id %}">VIEW</a></div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                        </div>
+                    </div>
+
+                      <nav class="bootstrap" aria-label="...">
+                        <ul class="pagination">
+                            {% if queryset.has_previous %}
+                          <li class="page-item disabled">
+                            <a class="page-link" href="?{{ page_request_var }}={{ queryset.previous_page_number }}">Previous</a>
+                          </li>
+                          {% endif %}
+                          <li class="page-item active">
+                            <a class="page-link" href="?{{ page_request_var }}={{ queryset.number }}">{{ queryset.number }}<span class="sr-only">(current)</span></a>
+                          </li>
+                          {% if queryset.has_next %}
+                          <li class="page-item">
+                            <a class="page-link" href="?{{ page_request_var }}={{ queryset.next_page_number }}">Next</a>
+                          </li>
+                          {% endif %}
+                        </ul>
+                      </nav>
+                    <!-- <nav class="post-center-wrap u-s-p-y-60">
+                        <ul class="blog-pg">
+                            {% if queryset.has_previous %}
+                            <li><a class="fa fa-angle-left" href="?{{ page_request_var }}={{ queryset.previous_page_number }}"></a></li>
+                            {% endif %}
+                            <li class="blog-pg--active"><a href="?{{ page_request_var }}={{ queryset.number }}"></a>{{ queryset.number }}</li>
+                            {% if queryset.has_next %}
+                            <li><a class="fa fa-angle-right" href="?{{ page_request_var }}={{ queryset.next_page_number }}"></a></li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                 -->
+                  {% if is_paginated %}
+                  <nav class="bootstrap" aria-label="...">
+                    <ul class="pagination">
+                        {% if page_obj.has_previous %}
+                      <li class="page-item disabled">
+                        <a class="page-link" href="?{{ page_request_var }}={{ page_obj.previous_page_number }}">Previous</a>
+                      </li>
+                      {% endif %}
+                      <li class="page-item active">
+                        <a class="page-link" href="?{{ page_request_var }}={{ page_obj.number }}">{{ page_obj.number }} <span class="sr-only">(current)</span></a>
+                      </li>
+                      {% if page_obj.has_next %}
+                      <li class="page-item">
+                        <a class="page-link" href="?{{ page_request_var }}={{ page_obj.next_page_number }}">Next</a>
+                      </li>
+                      {% endif %}
+                    </ul>
+                  </nav>
+                  {% endif %}
+                    <!-- {% if is_paginated %}
+                    <nav class="post-center-wrap u-s-p-y-60">
+                        <ul class="blog-pg">
+                            {% if page_obj.has_previous %}
+                            <li><a class="fa fa-angle-left" href="?{{ page_request_var }}={{ page_obj.previous_page_number }}"></a></li>
+                            {% endif %}
+                            <li class="blog-pg--active"><a href="?{{ page_request_var }}={{ page_obj.number }}"></a>{{ page_obj.number }}</li>
+                            {% if page_obj.has_next %}
+                            <li><a class="fa fa-angle-right" href="?{{ page_request_var }}={{ page_obj.next_page_number }}"></a></li>
+                            {% endif %}
+                            </ul>
+                    </nav>
+                    {% endif %} -->
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    </section>
+
+{% endblock %}

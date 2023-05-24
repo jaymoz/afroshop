@@ -1,0 +1,166 @@
+{% load static %}
+{% load cart_template_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<title>Afroshop</title>
+	<link rel="stylesheet" href="https://toert.github.io/Isolated-Bootstrap/versions/4.0.0-beta/iso_bootstrap4.0.0min.css">
+	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+	<link rel="stylesheet" href="{% static 'css/normalize.css' %}">
+	<link rel="stylesheet" href="{% static 'css/font-awesome/css/font-awesome.min.css' %}"/>
+	<link rel="stylesheet" href="{% static 'elegant_font/style.css'%}"/>
+	<link rel="stylesheet" href="{% static 'css/magnific-popup.css'%}">
+	<link rel="stylesheet" href="{% static 'css/slider-pro.css' %}">
+	<link rel="stylesheet" href="{% static 'css/owl.carousel.css' %}">
+	<link rel="stylesheet" href="{% static 'css/owl.theme.css' %}">
+	<link rel="stylesheet" href="{% static 'css/owl.transitions.css' %}">
+	<link rel="stylesheet" href="{% static 'css/animate.css' %}">
+	<link rel="stylesheet" href="{% static 'elegant_font/style.css' %}">
+	<link rel="stylesheet" href="{% static 'css/style.css' %}">
+	<link rel="stylesheet" href="{% static 'css/listing.css' %}">
+	<link rel="stylesheet" href="{% static 'css/cart-icon.css' %}">
+	<link rel="stylesheet" href="{% static 'css/store.css' %}">
+	<link rel="stylesheet" href="{% static 'css/utility.css' %}">
+	<link rel="stylesheet" href="{% static 'css/app.css' %}">
+
+</head>
+<body>
+	<header>
+		<div style="position:absolute;z-index: 10; background-color:rgba(255,255,255,0)" id="message" class="bootstrap container">
+			{% if messages %}
+					{% for message in messages %}
+					<div align="center" class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+						{{ message }}
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					{% endfor %}
+			{% endif %}
+			</div>
+		<!-- Navigation Menu start-->
+	<nav id="topNav" class="bootstrap navbar navbar-default main-menu">
+	<div class="container">
+		<button class="navbar-toggler hidden-md-up pull-right" type="button" data-toggle="collapse" data-target="#collapsingNavbar">
+			☰
+		</button>
+		<div class="collapse navbar-toggleable-sm" id="collapsingNavbar">
+			<ul class="nav navbar-nav">
+				<li>
+			   <a href="{% url 'home' %}">HOME</a>
+			   </li>
+			   <li>
+				   <a href="{% url 'store' %}">SHOP</a>
+			   </li>
+			   {% if request.user.is_authenticated %}
+			   <li>
+				   <a href="{% url 'dashboard' request.user.id %}">PROFILE</a>
+			   </li>
+			   {% endif %}
+			   {% if request.user.is_staff %}
+			   <li>
+				   <a href="/AXGYgVBmmTgSdDLx/">ADMIN</a>
+			   </li>
+			   {% endif %}
+			   {% if request.user.is_authenticated %}
+			   <li>
+				   <a href="{% url 'cart' %}"><i class="fa"  id="cart">&#xf07a;</i>
+				   <span class='badge badge-warning' id='lblCartCount'>{{request.user|cart_item_count}}</span>
+				 </a>
+			   </li>
+			   <li>
+				   <a href="{% url 'account_logout' %}">LOGOUT</a>
+			   </li>
+			   {% else %}
+			   <li>
+				   <a href="{% url 'account_login' %}">LOGIN</a>
+			   </li>
+			   <li>
+				   <a href="{% url 'account_signup' %}">SIGN UP</a>
+			   </li>
+			   {% endif %}
+
+   </ul>
+		</div>
+	</div>
+</nav>
+	</header>
+	<!-- Header End -->  
+	<section class="slider-pro slider" id="slider">
+		<div class="sp-slides">
+			{% for carousel in carousels %}
+			<div class="sp-slide main-slides">
+				<div class="img-overlay"></div>
+
+				<img class="sp-image" src="{{carousel.image.url}}" alt=""/>
+
+				<h1 class="sp-layer slider-text-big"
+				data-position="left" data-show-transition="left" data-hide-transition="right" data-show-delay="1500" data-hide-delay="200">
+				<span class="highlight-texts">{{carousel.title}}</span>
+				</h1>
+
+				<p class="sp-layer"
+				data-position="left" data-vertical="15%" data-show-delay="2000" data-hide-delay="200" data-show-transition="left" data-hide-transition="right">
+					{{carousel.description|striptags|safe}}
+				</p>
+			</div>
+			{% endfor %}
+		</div>
+	</section>
+
+	{% block content %}
+	{% endblock %}
+	
+	<!-- <section class="footer-container">
+        <div class="container">
+            <div class="row footer-containertent">
+                <div class="col-md-4">
+                    <img src="images/p.png" alt="Linder's Cuisine">
+                    <h4>News & Updates</h4>
+                    <p>Check our blog to keep up to date with latest meals and updates!</p>
+                </div>
+                <div class="col-md-4 contac-us">
+                    <h4>Contact Us</h4>
+                    <p>Lorem ipsum dolor sit amet adipisicing elit.</p>
+					<ul>
+                            <li><i class="fa fa-home"></i>123 New Venu Street</li>
+                            <li><i class="fa fa-phone"></i>001 123 12345 99</li>
+                            <li><i class="fa fa-envelope-o"></i>linderscuisine@gmail.com</li>
+                        </ul>
+                </div>
+            </div>
+        </div>
+	</section> -->
+	
+{% include  'app/footer.html' %}
+	<!-- Footer End -->
+
+	<script>
+		var message_ele = document.getElementById("message");
+		setTimeout(function(){ 
+	   message_ele.style.display = "none"; 
+	}, 3000);
+	
+	</script>
+	<script src="{% static 'js/jquery-1.11.3.min.js' %}"></script>
+	<script src="{% static 'js/bootstrap.min.js' %}"></script>
+	<script src="{% static 'js/modernizr.min.js' %}"></script>
+	<script src="{% static 'js/jquery.easing.1.3.js' %}"></script>
+	<script src="{% static 'js/jquery.scrollUp.min.js' %}"></script>
+	<script src="{% static 'js/jquery.easypiechart.js' %}"></script>
+	<script src="{% static 'js/isotope.pkgd.min.js' %}"></script>
+	<script src="{% static 'js/jquery.fitvids.js' %}"></script>
+	<script src="{% static 'js/jquery.stellar.min.js' %}"></script>
+	<script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+	<script src="{% static 'js/wow.min.js' %}"></script>
+	<script src="{% static 'js/jquery.nav.js' %}"></script>
+	<script src="{% static 'js/imagesloaded.pkgd.min.js'  %}"></script>
+	<script src="{% static 'js/smooth-scroll.min.js' %}"></script>
+	<script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
+	<script src="{% static 'js/jquery.sliderPro.min.js' %}"></script>
+	<script src="{% static 'js/owl.carousel.min.js' %}"></script>
+	<script src="{% static 'js/custom.js' %}"></script>
+</body>
+</html>

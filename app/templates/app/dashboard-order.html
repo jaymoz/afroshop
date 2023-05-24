@@ -1,0 +1,145 @@
+{% extends 'app/dashboard_link.html' %}
+{% load static %}
+{% load filter_paginator_tags %}
+{% block content %}
+<section  style="margin-top: 100px; margin-bottom:100px;"> 
+    <div class="u-s-p-b-60">
+        <div class="section__content">
+            <div class="dash">
+                <div class="container">
+                    <div class="row">
+                        {% include 'app/dash-include.html' %}
+                        <div class="container col-lg-9 col-md-12">
+                            <div class="dash__box dash__box--shadow dash__box--radius dash__box--bg-white u-s-m-b-30">
+                                <div class="dash__pad-2">
+                                    <form method="GET" action="." class="main-form">
+                                        <div class="gl-inline">
+                                        <div class="u-s-m-b-15">
+                                            <label for="date1">start date</label>
+                                            <input class="input-text input-text--border-radius input-text--style-1" name="date_min" id="date1" type="date" placeholder="Search">
+                                        </div>
+
+                                        <div class="u-s-m-b-15">
+                                            <label for="date2">End date</label>
+                                            <input class="input-text input-text--border-radius input-text--style-1" name="date_max" id="date2" type="date" placeholder="Search">
+                                        </div>
+                                        <div class="u-s-m-b-15">
+                                            <label for="main-search">status</label>
+                                        <select id="category" class="input-text input-text--border-radius input-text--style-1" name="status">
+                                            {% for x, y in form.fields.status.choices %}
+                                        <option value="{{x}}"{% if form.fields.status.value == x %} selected {% endif %}>{{y}}</option>
+                                        {% endfor %}
+                                        </select>
+                                        </div>
+                                        <div class="u-s-m-b-15">
+                                            <label for="btn5"> </label>
+                                            <button style="border-radius:12px;" class="bootstrap btn btn-success" id="btn5" type="submit" placeholder="Search">search</button>
+                                        </div>
+                                    </div>
+                                    </form>
+                                </div>
+                            </div>
+                        
+                        </div>
+
+                        <div class="col-lg-9 col-md-12">
+                            <div class="dash__box dash__box--shadow dash__box--radius dash__box--bg-white u-s-m-b-30">
+                                <div class="dash__pad-2">
+                                    <h1 class="dash__h1 u-s-m-b-14">My Orders</h1>
+
+                                    <span class="dash__text u-s-m-b-30">View and manage current and previous orders.</span>
+                                    <div class="m-order__list">
+                                        {% for order in queryset %}
+                                        <div class="m-order__get">
+                                            <div class="manage-o__header u-s-m-b-30">
+                                                <div class="dash-l-r">
+                                                    <div>
+                                                        <div class="manage-o__text-2 u-c-secondary">Order #{{order.id}}</div>
+                                                        <div class="manage-o__text u-c-silver">Placed on {{order.ordered_date}}</div>
+                                                    </div>
+                                                    <div>
+                                                        <div class="dash__link dash__link--brand">
+
+                                                            <a href="{% url 'order-detail' order.id %}">VIEW</a></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="manage-o__description">
+                                                <div class="description__container">
+                                                    <div class="description__info-wrap">
+                                                        <span>ref code</span> </div>
+                                                    <div class="description-title">{{order.ref_code}}</div>
+                                                </div>
+                                                
+                                                <div class="description__info-wrap">
+                                                    <div>
+                                                        {% if order.get_status_display == "On delivery" %}
+                                                        <td><span class="manage-o__badge badge--delivered">On delivery</span></td>
+                                                        {% elif order.get_status_display == "Delivered" %}
+                                                        <td><span class="manage-o__badge badge--shipped">Delivered</span></td>
+                                                        {% elif order.get_status_display == "Refund requested" %}
+                                                        <td><span class="manage-o__badge badge--processing">Refund requested</span></td>
+                                                        {% elif order.get_status_display == "Refund granted" %}
+                                                        <td><span class="manage-o__badge badge--shipped">Refund accepted</span></td>
+                                                        {% elif order.get_status_display == "Refund completed" %}
+                                                        <td><span class="manage-o__badge badge--shipped">Refund completed </span></td>
+                                                        {% elif order.get_status_display == "Cancelled" %}
+                                                        <td><span class="manage-o__badge badge--delivered">Cancelled</span></td>
+                                                        {% elif order.get_status_display == "Refund decliined" %}
+                                                        <td><span class="manage-o__badge badge--delivered">Refund request declined</span></td>
+                                                        {% else %}
+                                                        <td><span class="manage-o__badge badge--processing">Processing</span></td>
+                                                        {% endif %}
+                                                    </div>
+                                                    <div>
+
+                                                        <span class="manage-o__text-2 u-c-silver">
+
+                                                            <span class="manage-o__text-2 u-c-secondary"></span></span></div>
+                                                    <div>
+
+                                                        <span class="manage-o__text-2 u-c-silver">Total:
+
+                                                            <span class="manage-o__text-2 u-c-secondary">₽{{order.get_total}}</span></span></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                    </div>
+                                </div>
+                            
+                                <nav class="post-center-wrap u-s-p-y-60">
+                                    <ul class="blog-pg">
+                                        {% if queryset.has_previous %}
+                                        <li><a href="{% my_url queryset.previous_page_number 'page' request.GET.urlencode %}">{{queryset.previous_page_number}}</a></li>
+                                        {% endif %}
+                                        <li class="blog-pg--active"><a href="{% my_url queryset.number 'page' request.GET.urlencode %}">{{ queryset.number }}</a></li>
+                                        {% if queryset.has_next %}
+                                        <li><a class="fa fa-angle-right" href="{% my_url queryset.next_page_number 'page' request.GET.urlencode %}"></a></li>
+                                        {% endif %}
+                                    </ul>
+                                </nav>
+                            
+                                {% if is_paginated %}
+                                <nav class="post-center-wrap u-s-p-y-60">
+                                    <ul class="blog-pg">
+                                        {% if page_obj.has_previous %}
+                                        <li><a href="{% my_url page_obj.previous_page_number 'page' request.GET.urlencode %}">{{page_obj.previous_page_number}}</a></li>
+                                        {% endif %}
+                                        <li class="blog-pg--active"><a href="{% my_url page_obj.number 'page' request.GET.urlencode %}"></a>{{ page_obj.number }}</li>
+                                        {% if page_obj.has_next %}
+                                        <li><a class="fa fa-angle-right" href="{% my_url page_obj.next_page_number 'page' request.GET.urlencode %}"></a></li>
+                                        {% endif %}
+                                        </ul>
+                                </nav>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

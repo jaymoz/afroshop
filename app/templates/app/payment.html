@@ -1,0 +1,147 @@
+{% extends 'app/dashboard_link.html' %}
+{% load static %}
+{% block content %}
+
+<script src="https://www.paypal.com/sdk/js?client-id=ASxQbYpqGT7jEXY7n3Y_1qpKnwpRVvrF0N5gdNya9d8zIibKR9SFiZhz263SfN7fxsjnu2pROC4Vlr4m&currency=USD&disable-funding=paylater"></script>
+
+<body class="config">
+    <div id="app">
+        <div class="app-content">
+            <div class="u-s-p-b-60">
+                <div class="section__content">
+                    <div class="container">
+                        <div style="margin-top: 40px;" class="row">
+                        </div>
+                    </div>
+                </div>
+                <!--====== End - Section Content ======-->
+            </div>
+            <!--====== Section 3 ======-->
+            <div class="u-s-p-b-60">
+
+                <!--====== Section Content ======-->
+                <div class="section__content">
+                    <div class="container">
+                        <div class="checkout-f">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <h1 class="checkout-f__h1">PAY WITH PAYPAL</h1>
+                                    <hr>
+                                    <div class="o-summary__section u-s-m-b-30">
+                                        <div class="o-summary__box">
+                                    <form class="checkout-f__delivery">
+            
+                                        <div class="u-s-m-b-30">
+
+                                            <div class="o-summary__section u-s-m-b-30">
+                                                <div class="o-summary__box">
+                                                    <div align="center" id="paypal-button-container"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--====== End - Section Content ======-->
+            </div>
+            <!--====== End - Section 3 ======-->
+        </div>
+        <!--====== End - App Content ======-->
+
+
+    </div>
+
+    <!--====== Vendor Js ======-->
+    <script src="{% static 'js/vendor.js' %}"></script>
+
+    <!--====== jQuery Shopnav plugin ======-->
+    <script src="{% static 'js/jquery.shopnav.js' %}"></script>
+
+    <!--====== App ======-->
+    <script src="{% static 'js/app.js' %}"></script>
+
+    <script>
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        const csrftoken = getCookie('csrftoken');
+        var total = '{{order.get_total}}'
+        var orderId = '{{order.id}}'
+
+        // Render the PayPal button into #paypal-button-container
+        paypal.Buttons({
+            style: {
+                color: 'blue',
+                shape: 'rect',
+                label: 'pay',
+                height: 40
+
+            },
+            // Call your server to set up the transaction
+            createOrder: function(data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: total
+                        }
+                    }]
+                });
+            },
+
+            // Call your server to finalize the transaction
+            onApprove: function(data, actions) {
+            return actions.order.capture().then(function(details){
+                var url = "{% url 'payment-checkout' %}";
+
+                fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type' : 'application/json',
+                        'X-CSRFToken' : csrftoken,
+                    },
+                    body: JSON.stringify({
+                        'orderId':orderId,
+                        'status' : details.status
+                    })
+                }).then(function(response) {
+                    // Check if the payment was completed successfully
+                    if (details.status.toLowerCase() === "completed") {
+                        // Redirect to the payment completed page
+                        window.location.href = "{% url 'payment-success' %}";
+                    } else {
+                        // Redirect to the payment not complete page
+                        window.location.href = "{% url 'payment-fail' %}";
+                    }
+                }).catch(function(error) {
+                    console.log(error);
+                });
+
+            })
+        }
+
+            }).render('#paypal-button-container');
+
+    </script>
+
+</body>
+
+{% endblock %}

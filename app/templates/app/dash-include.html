@@ -1,0 +1,70 @@
+<div class="col-lg-3 col-md-12">
+    <div class="dash__box dash__box--bg-white dash__box--shadow u-s-m-b-30">
+        <div class="dash__pad-1">
+
+            <span class="dash__text u-s-m-b-16">Hey! {{request.user}} </span>
+            <ul class="dash__f-list">
+                <li>
+
+                    <a class="dash-active" href="{% url 'dashboard' request.user.id %}">Account</a></li>
+                    <li>
+
+                        <a href="{% url 'dash-profile' request.user.id %}">Profile</a></li>
+                    <li>
+                <li>
+
+                    <a href="{% url 'dash-order' request.user.id %}">Orders</a></li>
+                <li>
+                    <li>
+
+                        <a href="{% url 'address-list' request.user.id %}">Address</a></li>
+                    <li>
+
+                    <a href="{% url 'ref' request.user.id %}">refunds</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="dash__box dash__box--bg-white dash__box--shadow dash__box--w">
+        <div class="dash__pad-1">
+            <ul class="dash__w-list">
+                <li>
+                    <div class="dash__w-wrap">
+
+                        <span class="dash__w-icon dash__w-icon-style-1"><i class="fa fa-shopping-cart"></i></span>
+
+                        <span class="dash__w-text">{{total_orders}}</span>
+
+                        <span class="dash__w-name">Orders Placed</span></div>
+                </li>
+                <li>
+                    <div class="dash__w-wrap">
+
+                        <span class="dash__w-icon dash__w-icon-style-3"><i class="fa fa-truck"></i></i></span>
+
+                        <span class="dash__w-text">{{on_delivery}}</span>
+
+                        <span class="dash__w-name">On Delivery</span></div>
+                </li>
+                <li>
+                    <div class="dash__w-wrap">
+
+                        <span class="dash__w-icon dash__w-icon-style-3"><i style="color:green;" class="fa fa-check"></i></i></span>
+
+                        <span class="dash__w-text">{{delivered}}</span>
+
+                        <span class="dash__w-name">Delivered</span></div>
+                </li>
+                <li>
+                    <div class="dash__w-wrap">
+
+                    <i style= "color: red;" class="fa fa-times"></i>
+
+                        <span class="dash__w-text">{{cancelled}}</span>
+
+                        <span class="dash__w-name">Cancelled Orders</span></div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+</div>

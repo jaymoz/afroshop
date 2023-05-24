@@ -1,0 +1,85 @@
+{% extends 'app/base_1.html' %}
+{% load static %}
+{% block content %}
+
+
+<section  style="margin-top:50px;" class="products">
+
+   <div class="products-box">
+        <div class="products-box-grid" style="padding: 60px 0px!important;">
+{% for item in items %}
+    <div data-scroll class="dash__pad-1 dash__box dash__box--shadow dash__box--radius dash__box--bg-white u-s-m-b-30" style="box-shadow:0px 0px 10px 5px #ededed; border-radius: 15px;">
+        <div class="products-box-grid-card-img">
+            <img class="products-box-grid-card-img" src="{{item.imageURL}}" alt="could not load image"/>
+        </div>
+        <div class="products-box-grid-card-name">
+           <p id="h6">{{item.name}}</p>
+            {% if item.discount_price %}
+                <span style="display:inline-block; text-decoration: line-through;"><i class="fa fa-ruble"></i>{{item.price}}</span>
+                <p style="display:inline-block; margin-left:5px;" id="price"><i class="fa fa-ruble"></i> {{item.discount_price}}</p>
+            {% else %}
+                <p id="price"><i class="fa fa-ruble"></i> {{item.price}}</p>
+            {% endif %}
+            <div style="background-color: rgba(255,255,255,0);">
+                <a href="{% url 'item-detail' item.id %}" class="btn btn-pri" target="_blank">View</a>
+            </div>
+            <div class="rating">
+                {% if item.get_average_rating > 0 %}
+                    {% with rating=item.get_average_rating %}
+                        {% for i in "12345" %}
+                            {% if i|add:"-1" < rating %}
+                                <i style="color:#F2B600" class="fa fa-star"></i>
+                            {% else %}
+                                <i style="color:#F2B600" class="fa fa-star-o"></i>
+                            {% endif %}
+                        {% endfor %}
+                        <span class="num-ratings">({{ item.get_review_count }})</span>
+                    {% endwith %}
+                {% else %}
+                    <span class="no-ratings">No ratings yet</span>
+                {% endif %}
+            </div>
+        </div>
+        {% if item.out_of_stock == True %}
+            <div align="center">
+                <label>Currently out of stock</label>
+            </div>
+        {% else %}
+            <div class="products-box-grid-card-btn">
+               <a href="{{item.get_add_to_cart_url}}" class="btn btn-sec" id="button-1">Add to cart</a>
+               <a href="{{item.get_remove_from_cart_url}}" class="btn btn-pri" id="button-1">Remove</a>
+           </div>
+        {% endif %}
+    </div>
+{% endfor %}
+        </div>
+    </div>
+</section>
+
+
+     {% endblock %}
+
+
+     <!-- <div class="bootstrap" style="background-color: rgba(255,255,255,0);">
+      <button type="button" class="btn btn-pri" data-toggle="modal" data-target="#exampleModalCenter">
+        View
+      </button>
+      <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalCenterTitle">Item description</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <p>{{item.description}}</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+</div> -->

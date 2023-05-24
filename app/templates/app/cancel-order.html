@@ -1,0 +1,46 @@
+{% extends 'app/dashboard_link.html' %}
+{% load static %}
+{% block content %}
+
+<section  style="margin-top: 100px; margin-bottom:100px;">      
+     <div class="u-s-p-b-60">
+         <div class="section__content">
+             <div class="dash">
+                 <div class="container">
+                     <div class="row">
+                         {% include 'app/dash-include.html' %}
+                         <div class="col-lg-9 col-md-12">
+                             <h1 class="dash__h1 u-s-m-b-30">Order Details</h1>
+                             <div class="dash__box dash__box--shadow dash__box--radius dash__box--bg-white u-s-m-b-30">
+                                 <div class="dash__pad-2">
+                                     <div class="dash-l-r">
+                                        <div class="container">
+                                            <h2 class="dash__h2 u-s-p-xy-20"><b>Are you sure you want to cancel this order?</b></h2>
+                                            <form method = "POST" action="." class="respond__form">
+                                                {% csrf_token %}
+                                                <div class="respond__group">
+                                                    <div class="u-s-m-b-15">
+            
+                                                        <div><a class="btn btn-danger" href="{% url 'order-detail' single_order.id %}">Cancel</a></div>
+                                                    </div>
+                                                    <div>
+                                                            <div><button class="btn btn-success" type="submit">Ok</button></div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                         </div>
+                                     </div>
+                                 </div>
+
+
+                             
+                         </div>
+                     </div>
+                 </div>
+             </div>
+         </div>
+     </div>
+</section>
+
+{% endblock %}

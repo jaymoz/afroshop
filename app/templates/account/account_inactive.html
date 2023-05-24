@@ -1,0 +1,15 @@
+{% extends "account/base_1.html" %}
+{% load static %}
+
+{% load i18n %}
+
+{% block content %}
+<link rel="stylesheet" href="https://toert.github.io/Isolated-Bootstrap/versions/4.0.0-beta/iso_bootstrap4.0.0min.css">
+<section  style="margin-top: 100px; margin-bottom:100px;"> 
+<div class="bootstrap container">
+<h1>{% trans "Account Inactive" %}</h1>
+
+<p>{% trans "This account is inactive." %}</p>
+</div>
+</section>
+{% endblock %}

@@ -1,0 +1,114 @@
+{% extends 'app/dashboard_link.html' %}
+{% load static %}
+{% block content %}
+
+<section  style="margin-top: 100px; margin-bottom:100px;"> 
+<div class="u-s-p-b-60">
+
+    <div class="section__content">
+        <div class="dash">
+            <div class="container">
+                <div class="row">
+                    {% include 'app/dash-include.html' %}
+                    <div class="col-lg-9 col-md-12">
+                        <div class="dash__box dash__box--shadow dash__box--radius dash__box--bg-white u-s-m-b-30">
+                            <div class="dash__pad-2">
+                                <h1 class="dash__h1 u-s-m-b-14"><b>Dashboard</b></h1>
+
+                                <span class="dash__text u-s-m-b-30">From your Dashboard you can view order details and manage  your profile.</span>
+                                <div class="row">
+                                    <div class="col-lg-6 u-s-m-b-30">
+                                        <div class="dash__box dash__box--bg-grey dash__box--shadow-2 u-h-100">
+                                            <div class="dash__pad-3">
+                                                <h2 class="dash__h2 u-s-m-b-8">PERSONAL PROFILE</h2>
+                                                <div class="dash__link dash__link--secondary u-s-m-b-8">
+
+                                                    <a href="{% url 'dash-profile' request.user.id %}">View</a></div>
+
+                                                <span class="dash__text">Username: {{request.user.username}}</span>
+
+                                                <span class="dash__text">Email: {{request.user.email}}</span>
+                                                <br>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 u-s-m-b-30">
+                                        <div class="dash__box dash__box--bg-grey dash__box--shadow-2 u-h-100">
+                                            <div class="dash__pad-3">
+                                                <h2 class="dash__h2 u-s-m-b-8">DEFAULT ADDRESS</h2>
+                                                {% if def_address %}
+                                                <div class="dash__link dash__link--secondary u-s-m-b-8">
+
+                                                    <a href="{% url 'edit-address' def_address.id%}">View</a></div>
+
+                                                <span class="dash__text">{{def_address.street_address}}, {{def_address.apartment_address}}</span>
+                                                <span class="dash__text">{{def_address.city}}</span>
+                                                <span class="dash__text">{{def_address.phone}}</span>
+                                                {% else %}
+                                                <span class="dash__text">No default address available</span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 u-s-m-b-30">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dash__box dash__box--shadow dash__box--bg-white dash__box--radius">
+                            <h2 class="dash__h2 u-s-p-xy-20"><b>RECENT ORDERS</b></h2>
+                            <div class="dash__table-wrap gl-scroll">
+                                <table class="dash__table">
+                                    <thead>
+                                        <tr>
+                                            <th>Order #</th>
+                                            <th>ref code</th>
+                                            <th>Ordered date</th>
+                                            <th>Status</th>
+                                            <th>Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for order in recent_orders %}
+                                        <tr>
+                                            <td>{{order.id}}</td>
+                                            <td>{{order.ref_code}}</td>
+                                            <td>{{order.ordered_date}}</td>
+                                            {% if order.get_status_display == "On delivery" %}
+                                            <td><span class="manage-o__badge badge--delivered">On delivery</span></td>
+                                            {% elif order.get_status_display == "Delivered" %}
+                                            <td><span class="manage-o__badge badge--shipped">Delivered</span></td>
+                                            {% elif order.get_status_display == "Refund requested" %}
+                                            <td><span class="manage-o__badge badge--processing">Refund requested</span></td>
+                                            {% elif order.get_status_display == "Refund granted" %}
+                                            <td><span class="manage-o__badge badge--shipped">Refund accepted</span></td>
+                                            {% elif order.get_status_display == "Refund completed" %}
+                                            <td><span class="manage-o__badge badge--shipped">Refund completed </span></td>
+                                            {% elif order.get_status_display == "Cancelled" %}
+                                            <td><span class="manage-o__badge badge--delivered">Cancelled</span></td>
+                                            {% else %}
+                                            <td><span class="manage-o__badge badge--processing">Processing</span></td>
+                                            {% endif %}
+                                            <td>
+                                                <div class="dash__table-total">
+
+                                                    <span>₽{{order.get_total}}</span>
+                                                    <div class="dash__link dash__link--brand">
+
+                                                        <a href="{% url 'order-detail' order.id %}">VIEW</a></div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+
+{% endblock %}

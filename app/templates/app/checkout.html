@@ -1,0 +1,229 @@
+{% extends 'app/dashboard_link.html' %}
+{% load static %}
+{% block content %}
+
+<body class="config">
+    <div id="app">
+        <div class="app-content">
+            <div class="u-s-p-b-60">
+                <div class="section__content">
+                    <div class="container">
+                        <div style="margin-top: 40px;" class="row">
+                        </div>
+                    </div>
+                </div>
+                <!--====== End - Section Content ======-->
+            </div>
+            <!--====== Section 3 ======-->
+            <div class="u-s-p-b-60">
+
+                <!--====== Section Content ======-->
+                <div class="section__content">
+                    <div class="container">
+                        <div class="checkout-f">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <h1 class="checkout-f__h1">DELIVERY INFORMATION</h1>
+            
+                                    <hr>
+                                    <div class="o-summary__section u-s-m-b-30">
+                                        <div class="o-summary__box">
+                                    <form method="POST" class="checkout-f__delivery">
+                                        {% csrf_token %}
+                                        <div class="u-s-m-b-30">
+                                            {% if default_delivery_address %}
+                                            <div class="u-s-m-b-15">
+                                                <div class="check-box">
+
+                                                    <input name="use_default_delivery" type="checkbox" id="get-address">
+                                                    <div class="check-box__state check-box__state--primary">
+
+                                                        <label class="check-box__label" for="get-address">Use default delivery address</label></div>
+                                                </div>
+                                            </div>
+                                            {% endif %}
+                                            <div class="gl-inline">
+                                                <div class="u-s-m-b-15">
+
+                                                    <label class="gl-label" for="billing-fname">STREET ADDRESS *</label>
+
+                                                    <input class="input-text input-text--primary-style" type="text" id="billing-fname" placeholder="street address" name="street_address" data-bill="" placeholder="stret address"></div>
+                                                <div class="u-s-m-b-15">
+
+                                                    <label class="gl-label" for="billing-lname">APARTMENT NUMBER *</label>
+
+                                                    <input class="input-text input-text--primary-style" type="text" id="billing-lname" name="apartment_address" data-bill="" placeholder="apartment number"></div>
+                                            </div>
+
+
+                                            
+                                            <div class="u-s-m-b-15">
+
+                                                <label class="gl-label" for="billing-phone">PHONE *</label>
+
+                                                <input name="phone" class="input-text input-text--primary-style" type="text" id="billing-phone" data-bill="" placeholder="8 960 xxx-xx-xx"></div>
+                                            <div class="u-s-m-b-15">
+
+                                                <label class="gl-label" for="billing-street">CITY *</label>
+
+                                                <input name="city" class="input-text input-text--primary-style" type="text" id="billing-street" value="kazan" data-bill=""></div>
+                                            <div class="u-s-m-b-10">
+                                                <div class="check-box">
+
+                                                    <input name="set_default_delivery" type="checkbox" id="make-default-address" data-bill="">
+                                                    <div class="check-box__state check-box__state--primary">
+
+                                                        <label class="check-box__label" for="make-default-address">set as default delivery address </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="o-summary__section u-s-m-b-30">
+                                                <div class="o-summary__box">
+                                                        <div>
+    
+                                                            <button class="btn btn--e-brand-b-2" type="submit">PLACE ORDER</button></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <h1 class="checkout-f__h1">ORDER SUMMARY</h1>
+
+                                    <!--====== Order Summary ======-->
+                                    <div class="o-summary">
+                                        <div class="o-summary__section u-s-m-b-30">
+                                            <div class="o-summary__item-wrap gl-scroll">
+                                                {% for order_item in order.items.all %}
+                                                <div class="o-card">
+                                                    <div class="o-card__flex">
+                                                        <div class="o-card__img-wrap">
+
+                                                            <img class="u-img-fluid" src="{{order_item.item.imageURL}}" alt="">
+                                                        </div>
+                                                        <div class="o-card__info-wrap">
+
+                                                            <span class="o-card__name">
+
+                                                                <a >{{order_item.item.name}}</a></span>
+
+                                                        </div>
+                                                        {% if order_item.item.slug == "delivery" %}
+                                                        <div class="o-card__info-wrap">
+                                                            <span class="o-card__name">
+                                                        
+                                                        </div>
+                                                        {% else %}
+                                                        <div class="o-card__info-wrap">
+                                                            <span class="o-card__name">
+                                                            <span class="o-card__quantity">x{{order_item.quantity}}</span>
+                                                        </div>
+                                                        {% endif %}
+                                                        {% if order_item.item.discount_price %}
+                                                        <div class="o-card__info-wrap">
+
+                                                            <span class="o-card__name">
+
+                                                            <span class="o-card__price">₽{{ order_item.get_total_discount_item_price }}</span>
+                                                        </div>
+                                                        {% else %}
+                                                        <div class="o-card__info-wrap">
+
+                                                            <span class="o-card__name">
+
+                                                            <span class="o-card__price">₽{{ order_item.get_total_item_price }}</span>
+                                                        </div>
+                                                        {% endif %}
+                                                    </div>
+
+
+                                                </div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                        {% if default_delivery_address %}
+                                        <div class="o-summary__section u-s-m-b-30">
+                                            <div class="o-summary__box">
+                                                <h1 class="ship-b__text checkout-f__h1">DEFAULT DELIVERY ADDRESS</h1>
+                                                <div class="ship-b">
+                                                        <p class="ship-b__p">{{ default_delivery_address}}</p>
+                                                        <p class="ship-b__p">{{ default_delivery_address.phone}}</p>
+                                                    <p class="ship-b__p">{{ default_delivery_address.city}}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endif %}
+                                        <div class="o-summary__section u-s-m-b-30">
+                                            <div class="o-summary__box">
+                                                <table class="o-summary__table">
+                                                    <tbody>
+                                                        {% if order.coupon %}
+                                                        <tr>
+                                                            <td>Coupon</td>
+                                                            <td>{{order.coupon.code}}</td>
+                                                            <td>{{order.coupon.discount}}</td>
+                                                        </tr>
+                                                        {% endif %}
+                                                        <tr>
+                                                            <td>DELIVERY FEE</td>
+                                                            {% for order_item in order.items.all %}
+                                                            {% if order_item.item.slug == "delivery" %}
+                                                            <td>₽{{ order_item.item.price}}</td>
+                                                            {% endif %}
+                                                            {% endfor %}
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td>GRAND TOTAL</td>
+                                                            <td>₽{{order.get_total }}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--====== End - Order Summary ======-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--====== End - Section Content ======-->
+            </div>
+            <!--====== End - Section 3 ======-->
+        </div>
+        <!--====== End - App Content ======-->
+
+
+    </div>
+
+    <!--====== Vendor Js ======-->
+    <script src="{% static 'js/vendor.js' %}"></script>
+
+    <!--====== jQuery Shopnav plugin ======-->
+    <script src="{% static 'js/jquery.shopnav.js' %}"></script>
+
+    <!--====== App ======-->
+    <script src="{% static 'js/app.js' %}"></script>
+
+    <!--====== Noscript ======-->
+    <noscript>
+        <div class="app-setting">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="app-setting__wrap">
+                            <h1 class="app-setting__h1">JavaScript is disabled in your browser.</h1>
+
+                            <span class="app-setting__text">Please enable JavaScript in your browser or upgrade to a JavaScript-capable browser.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </noscript>
+</body>
+
+{% endblock %}

@@ -1,0 +1,172 @@
+{% extends  'app/base.html' %}
+{% load static %}
+
+{% block content %}
+	<section id="about" class="about-sec section-wrapper description">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12 col-sm-12 col-xs-12 section-header wow fadeInDown">
+					<h2><span class="highlight-text">About</span></h2>
+
+					<p class="col-md-8 col-sm-10 col-xs-12 col-md-offset-2 col-sm-offset-1">AFROSHOP is a web app that celebrates African culture by offering a wide range of African items. From clothing to accessories,
+						 AFROSHOP is the go-to destination for anyone looking to explore and embrace African fashion and style.</p>
+				</div>
+				<!-- Section Header End -->
+
+				<div class="col-md-6 col-sm-6 col-xs-12 custom-sec-img wow fadeInDown">
+					<img src="{% static 'images/b-min.jpg' %}" alt="Custom Image">
+				</div>
+
+				<div class="col-md-6 col-sm-6 col-xs-12 customized-text wow fadeInDown black-ed">
+				<p>Meet the founder of AFROSHOP - the one-stop-shop for all things African. With a passion for showcasing the beauty and diversity of African culture, this entrepreneur has created a web app 
+					that makes it easy to access authentic African items from anywhere in the world. Welcome to AFROSHOP!</p>
+
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section id="services" class="section-wrapper">
+		<div class="container">
+			<div class="row">
+
+				<!-- Section Header -->
+				<div class="col-md-12 col-sm-12 col-xs-12 section-header wow fadeInDown">
+					<h2><span class="highlight-text">Services</span></h2>
+				</div>
+				<!-- Section Header End -->
+
+				<div class="our-services">
+
+	
+		 <div class="row">
+					</div>
+
+					<div class="row">
+
+						<div class="col-md-4 col-sm-4 col-xs-12 text-xs-center wow fadeInDown" data-wow-delay=".1s">
+						<div class="service-box">
+							<div class="icon">
+								<i class="icon_star-half_alt"></i><h3>Snacks</h3>
+							</div>
+
+						</div>
+					</div>
+						<div class="col-md-4 col-sm-4 col-xs-12 text-xs-center wow fadeInDown" data-wow-delay=".1s">
+						<div class="service-box">
+							<div class="icon">
+								<i class="icon_music"></i><h3>Parties</h3>
+							</div>
+						</div>
+					</div>
+						<div class="col-md-4 col-sm-4 col-xs-12 text-xs-center wow fadeInDown" data-wow-delay=".1s">
+						<div class="service-box">
+							<div class="icon">
+								<i class="icon_cog"></i><h3>Events</h3>
+							</div>
+
+						</div>
+					</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</section>
+
+	<section id="portfolio" class="bgSection portfolio-section">
+		<div class="container">
+			<div class="row">
+
+				<!-- Section Header -->
+				<div class="col-md-12 col-sm-12 col-xs-12 section-header wow fadeInDown">
+					<h2><span class="highlight-text">Gallery</span></h2>
+
+				</div>
+				<!-- Section Header End -->
+
+			</div>
+		</div>
+
+		<!-- Works -->
+		<div class="portfolio-works wow fadeIn" data-wow-duration="2s">
+			<div class="portfolio-items">
+
+				<!-- Portfolio Items -->
+				{% for img in gallery %}
+				<div class="item portfolio-item">
+
+					<img src="{{img.image.url}}" alt="">
+					<div class="portfolio-details-wrapper">
+						<div class="portfolio-details">
+							<div class="portfolio-meta-btn">
+								<ul class="work-meta">
+									<li class="lighbox"><a href="{{img.image.url}}" class="featured-work-img"><i class="fa fa-search-plus"></i></a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+				{% endfor %}
+
+			</div>
+		</div>
+		<!-- Works End -->
+
+
+	</section>
+
+
+	 <section id="contact" class="section-wrapper contact-section" data-stellar-background-ratio="0.5">
+	<div class="parallax-overlay"></div>
+		<div class="container">
+
+
+				<div class="contact-details">
+
+
+					<!-- Contact Form -->
+					<div class="contact-form wow bounceInRight">
+						<div class="col-md-12">
+							<div class="dash__box dash__box--shadow dash__box--radius dash__box--bg-white u-s-m-b-30">
+							<div class="dash__box dash__box--shadow dash__box--bg-white dash__box--radius">
+								<div class="container">
+									<div class="col-md-12 col-sm-12 col-xs-12 section-header wow fadeInDown">
+											<div class="dash__pad-2">
+											<h2><span class="highlight-text">Contact Us</span></h2>
+						
+											<p class="col-md-8 col-sm-10 col-xs-12 col-md-offset-2 col-sm-offset-1">Kindly fill out the form and we will get back to you as soon as possible!</p>
+											</div>
+										</div>
+									<h2 class="dash__h2 u-s-p-xy-20"><b>Required fields are marked *</b></h2>
+									<form method="POST" action="." class="respond__form">
+										{% csrf_token %}
+										<div class="respond__group">
+											<div class="u-s-m-b-15">
+	
+												<label class="gl-label" for="comment">MESSAGE *</label><textarea class="text-area text-area--primary-style" id="comment" name="message" required></textarea></div>
+											<div>
+												<p class="u-s-m-b-30">
+	
+													<label class="gl-label" for="responder-name">EMAIL *</label>
+	
+													<input class="input-text input-text--primary-style" type="email" id="responder-name" name="email" required></p>
+													<div>
+	
+														<button style="margin-bottom:10px;" class="btn btn--e-brand-shadow" type="submit">SEND</button></div>
+											</div>
+										</div>
+									</form>
+								</div>
+	
+							</div>
+						</div>
+					</div>
+					</div>
+
+			</div>
+		</div>
+	</div>
+	</section>
+
+	{% endblock %}

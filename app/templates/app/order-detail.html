@@ -1,0 +1,290 @@
+       {% extends 'app/dashboard_link.html' %}
+       {% load static %}
+       {% block content %}
+
+       <section  style="margin-top: 100px; margin-bottom:100px;">      
+            <div class="u-s-p-b-60">
+                <div class="section__content">
+                    <div class="dash">
+                        <div class="container">
+                            <div class="row">
+                                {% include 'app/dash-include.html' %}
+                                <div class="col-lg-9 col-md-12">
+                                    <h1 class="dash__h1 u-s-m-b-30">Order Details</h1>
+                                    <div class="dash__box dash__box--shadow dash__box--radius dash__box--bg-white u-s-m-b-30">
+                                        <div class="dash__pad-2">
+                                            <div class="dash-l-r">
+                                                <div>
+                                                    <div class="manage-o__text-2 u-c-secondary">Order #{{single_order.id}}</div>
+                                                    <div class="manage-o__text-2 u-c-secondary">ref code {{single_order.ref_code}}</div>
+                                                    <hr>
+                                                    <div class="manage-o__text u-c-silver">Placed on {{single_order.ordered_date}}</div>
+                                                </div>
+                                                {% if single_order.get_status_display %}
+                                                <div>
+                                                    <div class="manage-o__text-2 u-c-silver">Delivery Fee:
+                                                        {% for order_item in single_order.items.all %}
+                                                        {% if order_item.item.slug == "delivery" %}
+                                                        <span class="manage-o__text-2 u-c-secondary">₽{{ order_item.item.price}}</span>
+                                                        {% endif %}
+                                                        {% endfor %}
+                                                    </div>
+                                                    <hr>
+                                                    <div class="manage-o__text-2 u-c-silver">Total:
+
+                                                    <span class="manage-o__text-2 u-c-secondary">₽{{single_order.get_total}}</span>
+                                                </div>
+                                                        {% if single_order.get_status_display == "Processing" %}
+                                                        <span class="dash__text-2">Pay by Cash on Delivery</span>
+                                                        <div class="dash__link dash__link--brand">
+                                                            <a href="{% url 'cancel-order' single_order.id %}">Cancel Order</a></div>
+                                                        {% elif single_order.get_status_display == "Delivered" %}
+                                                        <span class="dash__text-2">Paid by Cash on Delivery</span>
+                                                        {% elif single_order.get_status_display == "Cancelled" %}
+                                                        <span class="dash__text-2">Cancelled</span>
+                                                        {% elif single_order.get_status_display == "On delivery" %}
+                                                        <span class="dash__text-2">Pay by Cash on Delivery</span>
+                                                        {% else %}
+                                                        <span class="dash__text-2"></span>
+                                                        {% endif %}
+                                                    </div>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+        
+
+
+                                    <div class="dash__box dash__box--shadow dash__box--radius dash__box--bg-white u-s-m-b-30">
+                                        <div class="dash__pad-2">
+                                            <div class="manage-o">
+                                                <div class="manage-o__header u-s-m-b-30">
+                                                    <div class="manage-o__icon"><i class="fa fa-box u-s-m-r-5"></i>
+
+                                                        <span class="manage-o__text">Order Status</span></div>
+                                                </div>
+                                                <div class="manage-o__timeline">
+                                                    {% if single_order.get_status_display == "On delivery" %}
+                                                    <div class="timeline-row">
+                                                        <div class="col-lg-4 u-s-m-b-30">
+                                                            <div class="timeline-step">
+                                                                <div class="timeline-l-i timeline-l-i--finish">
+
+                                                                    <span class="timeline-circle"></span></div>
+
+                                                                <span class="timeline-text">Processing</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-4 u-s-m-b-30">
+                                                            <div class="timeline-step">
+                                                                <div class="timeline-l-i timeline-l-i--finish">
+
+                                                                    <span class="timeline-circle"></span></div>
+
+                                                                <span class="timeline-text">On delivery</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-4 u-s-m-b-30">
+                                                            <div class="timeline-step">
+                                                                <div class="timeline-l-i ">
+
+                                                                    <span class="timeline-circle"></span></div>
+
+                                                                <span class="timeline-text">Delivered</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    {% elif single_order.get_status_display == "Delivered" %}
+                                                    <div class="timeline-row">
+                                                        <div class="col-lg-4 u-s-m-b-30">
+                                                            <div class="timeline-step">
+                                                                <div class="timeline-l-i timeline-l-i--finish">
+
+                                                                    <span class="timeline-circle"></span></div>
+
+                                                                <span class="timeline-text">Processing</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-4 u-s-m-b-30">
+                                                            <div class="timeline-step">
+                                                                <div class="timeline-l-i timeline-l-i--finish">
+
+                                                                    <span class="timeline-circle"></span></div>
+
+                                                                <span class="timeline-text">On delivery</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-4 u-s-m-b-30">
+                                                            <div class="timeline-step">
+                                                                <div class="timeline-l-i timeline-l-i--finish">
+
+                                                                    <span class="timeline-circle"></span></div>
+
+                                                                <span class="timeline-text">Delivered</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    {% elif single_order.get_status_display == "Refund requested" %}
+                                                    <table class="dash__table">
+                                                        <tr>
+                                                            <td><span class="timeline-text">Your refund has been requested and is being processed.</span></td>
+                                                            <td><span class="manage-o__badge badge--processing">Refund requested</span></td>
+                                                        </tr>
+                                                    </table>
+                                                    {% elif single_order.get_status_display == "Refund granted" %}
+                                                    <table class="dash__table">
+                                                        <tr>
+                                                            <td><span class="timeline-text">Your request has been accepted.</span></td>
+                                                            <td><span class="manage-o__badge badge--shipped">Request accepted</span></td>
+                                                        </tr>
+                                                    </table>
+                                                    {% elif single_order.get_status_display == "Refund completed" %}
+                                                    <table class="dash__table">
+                                                        <tr>
+                                                            <td><span class="timeline-text">Your refund request has been completed.</span></td>
+                                                            <td><span class="manage-o__badge badge--shipped">Refund completed</span></td>
+                                                        </tr>
+                                                    </table>
+                                                    {% elif single_order.get_status_display == "Cancelled" %}
+                                                    <table class="dash__table">
+                                                        <tr>
+                                                            <td><span class="timeline-text">Your order was cancelled</span></td>
+                                                            <td><span class="manage-o__badge badge--delivered">Cancelled</span></td>
+                                                        </tr>
+                                                    </table>
+                                                    {% elif single_order.get_status_display == "Refund declined" %}
+                                                    <table class="dash__table">
+                                                        <tr>
+                                                            <td><span class="timeline-text">Your request for refund was not acceepted</span></td>
+                                                            <td><span class="manage-o__badge badge--delivered">Declined</span></td>
+                                                        </tr>
+                                                    </table>
+                                                    {% elif single_order.get_status_display == "Processing" %}
+                                                    <div class="timeline-row">
+                                                        <div class="col-lg-4 u-s-m-b-30">
+                                                            <div class="timeline-step">
+                                                                <div class="timeline-l-i timeline-l-i--finish">
+
+                                                                    <span class="timeline-circle"></span></div>
+
+                                                                <span class="timeline-text">Processing</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-4 u-s-m-b-30">
+                                                            <div class="timeline-step">
+                                                                <div class="timeline-l-i">
+
+                                                                    <span class="timeline-circle"></span></div>
+
+                                                                <span class="timeline-text">On delivery</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-4 u-s-m-b-30">
+                                                            <div class="timeline-step">
+                                                                <div class="timeline-l-i ">
+
+                                                                    <span class="timeline-circle"></span></div>
+
+                                                                <span class="timeline-text">Delivered</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="dash__box dash__box--shadow dash__box--radius dash__box--bg-white u-s-m-b-30">
+                                        <div class="dash__pad-2">
+                                            <div class="manage-o">
+                                                <div class="manage-o__header u-s-m-b-30">
+
+                                                        <span class="manage-o__text">Order Items</span></div>
+                                                </div>
+                                                {% for order_item in single_order.items.all %}
+                                                <div class="manage-o__description">
+                                                    <div class="description__container">
+                                                        <div class="description__img-wrap">
+
+                                                            <img class="row-image" src="{{order_item.item.imageURL}}" alt=""></div>
+                                                        <div class="description-title">{{ order_item.item.name }}</div>
+                                                    </div>
+                                                    <div class="description__info-wrap">
+                                                        <div>
+
+                                                            <span class="manage-o__text-2 u-c-silver">Quantity:
+
+                                                                <span class="manage-o__text-2 u-c-secondary">{{order_item.quantity}}</span></span></div>
+                                                        <div>
+
+                                                            <span class="manage-o__text-2 u-c-silver">Total:
+                                                                {% if order_item.item.discount_price %}
+                                                                <span class="manage-o__text-2 u-c-secondary"></span>
+                                                                ₽{{ order_item.get_total_discount_item_price }}</span>
+                                                                {% else %}
+                                                                <span class="manage-o__text-2 u-c-secondary"></span>
+                                                                ₽{{ order_item.get_total_item_price }}</span>
+                                                                {% endif %}
+                                                            </div>
+                                                    </div>
+                                                </div>
+                                                {% endfor %}
+                                        </div>
+                                    </div>
+                                    {% if single_order.coupon %}
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="dash__box dash__box--shadow dash__box--radius dash__box--bg-white u-s-m-b-30">
+                                                <div class="dash__pad-3">
+                                                    <h2 class="manage-o__text-2 u-c-secondary">Delivery Information</h2>
+        
+                                                    <span class="dash__text-2">Street Adress:{{single_order.street_address}}</span>
+        
+                                                    <span class="dash__text-2">street number: {{single_order.apartment_address}}</span>
+                                                    <span class="dash__text-2">city: {{single_order.city}}</span>
+                                                    <span class="dash__text-2">phone: {{single_order.phone}}</span>
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-6">
+                                            <div class="dash__box dash__box--bg-white dash__box--shadow u-s-m-b-30">
+                                                <div class="dash__pad-3">
+                                                    <h2 class="manage-o__text-2 u-c-secondary">Coupon</h2>
+
+                                                    <span class="dash__text-2">code:{{single_order.coupon.code}}</span>
+                                                    <span class="dash__text-2">discount: {{single_order.coupon.discount}}</span>
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    {% else %}
+                                        <div class="dash__box dash__box--shadow dash__box--radius dash__box--bg-white u-s-m-b-30">
+                                            <div class="dash__pad-3">
+                                                <h2 class="manage-o__text-2 u-c-secondary">Delivery Information</h2>
+    
+                                                <span class="dash__text-2">Street Adress:{{single_order.street_address}}</span>
+    
+                                                <span class="dash__text-2">street number: {{single_order.apartment_address}}</span>
+                                                <span class="dash__text-2">city: {{single_order.city}}</span>
+                                                <span class="dash__text-2">phone: {{single_order.phone}}</span>
+                                                
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--====== End - Section Content ======-->
+            </div>
+    </section>
+
+    
+{% endblock content %}

@@ -1,0 +1,140 @@
+{% extends 'app/checkout_base.html' %}
+{% load static %}
+{% block content %}
+<body>
+        <div class="app-content">
+            <div class="u-s-p-y-60">
+
+            <div class="u-s-p-b-60">
+                <!--====== Section Content ======-->
+                <div class="section__content">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 u-s-m-b-30">
+                                <div class="msg table-responsive">
+					            <button onclick="window.history.back()" class="btn btn-success">Continue Shopping</button>
+                                    <table class="table-p">
+                                        <tbody>
+                                            {% for order_item in order.items.all %}
+                                            <tr>
+                                                <td>
+                                                    <div class="table-p__box">
+                                                        <div class="table-p__img-wrap">
+
+                                                            <img class="u-img-fluid" src="{{order_item.item.imageURL}}" alt=""></div>
+                                                        <div class="table-p__info">
+
+                                                            <span class="table-p__name">
+                                                                    <p><b>{{ order_item.item.name }}</b></p>
+                                                                </span>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                {% if order_item.item.discount_price %}
+                                                <td>
+                                                    
+                                                    <span class="table-p__price">₽{{ order_item.get_total_discount_item_price }}</span>
+                                                    <span class="table-p__price badge-primary" style="margin: 0px 15%; border-radius: 15px; width: 70%; font-size: 12px;">Saving ₽{{ order_item.get_amount_saved }}</span>
+                                                </td>
+                                                {% else %}
+                                                <td>
+                                                    
+                                                    <span class="table-p__price">₽{{ order_item.get_total_item_price }}</span>
+                                                </td>
+                                                {% endif %}
+                                                {% if order_item.item.slug == "delivery" %}
+                                                <td>
+                                                    <div class="table-p__input-counter-wrap">
+                                                        <div class="input-counter">
+                                                        
+                                                    </div>
+                                                </td>
+                                                {% else %}
+                                                <td>
+                                                    <div class="table-p__input-counter-wrap">
+                                                        <div class="input-counter">
+
+                                                            <a href="{% url 'remove-single-item-from-cart-page' order_item.item.slug %}" style="color:red;" class="input-counter__minus fa fa-minus"></a>
+
+                                                            <span class="input-counter__text input-counter--text-primary-style" style="vertical-align:middle; padding:11.5px 0px;">{{ order_item.quantity }}</span>
+
+                                                            <a href="{% url 'add-to-cart-page' order_item.item.slug %}" style="color:green;" class="input-counter__plus fa fa-plus"></a></div>
+                                                    </div>
+                                                </td>
+                                                {% endif %}
+                                                <td>
+                                                    <div class="table-p__del-wrap">
+
+                                                        <a  class="fa fa-trash table-p__delete-link" href="{% url 'remove-from-cart-page' order_item.item.slug %}"></a></div>
+                                                </td>
+                                            </tr>
+                                            {% empty %}
+                                            <div class="col-lg-12 col-md-12 u-s-m-b-30">
+                                                    <h1 class="gl-h1">YOUR CART IS EMPTY</h1>
+                                            </div>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+                <!--====== End - Section Content ======-->
+            </div>
+  
+
+			{% if order.get_total %}
+            <div class="u-s-p-b-60">
+
+                <!--====== Section Content ======-->
+                <div class="section__content">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 u-s-m-b-30">
+                                <form class="f-cart">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-6 u-s-m-b-30">
+                                            <div class="msg f-cart__pad-box">
+                                                <div class="u-s-m-b-30">
+                                                    <table class="f-cart__table">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>Delivery Fee</td>
+                                                                {% for order_item in order.items.all %}
+                                                                {% if order_item.item.slug == "delivery" %}
+                                                                <td>₽{{ order_item.item.price}}</td>
+                                                                {% endif %}
+                                                                {% endfor %}
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td>TOTAL</td>
+                                                                <td>₽{{order.get_total }}</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <div>
+
+                                                    <a href="{% url 'checkout' %}" class="btn btn--e-brand-b-2"> PROCEED TO CHECKOUT</a></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--====== End - Section Content ======-->
+            </div>
+            {% endif %}
+        </div>
+        </div>
+
+    {% include  'app/footer.html' %}
+    </div>
+    </body>
+
+
+{% endblock content%}
+    

@@ -1,0 +1,71 @@
+{% extends 'app/dashboard_link.html' %}
+{% load static %}
+{% block content %}
+       
+<section  style="margin-top: 100px; margin-bottom:100px;"> 
+    <div class="u-s-p-b-60">
+        <div class="section__content">
+            <div class="dash">
+                <div class="container">
+                    <div class="row">
+                        {% include 'app/dash-include.html' %}  
+                        <div class="col-lg-9 col-md-12">
+                            <div class="dash__box dash__box--shadow dash__box--radius dash__box--bg-white u-s-m-b-30">
+                                <div class="dash__pad-2">
+                                    <div class="dash__address-header">
+                                        <h1 class="dash__h1">Address(s)</h1>
+                                </div>
+                            </div>
+                            <div class="dash__box dash__box--shadow dash__box--bg-white dash__box--radius u-s-m-b-30">
+                                <div class="dash__table-2-wrap gl-scroll">
+                                    <table class="dash__table-2">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>Street Address</th>
+                                                <th>Apartment Number</th>
+                                                <th>City</th>
+                                                <th>Phone</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for address in addresses %}
+                                            <tr>
+                                                <td>
+
+                                                    <a class="address-book-edit btn--e-transparent-platinum-b-2" href="{% url 'edit-address' address.id %}">Edit</a>
+                                                    <a class="bootstrap btn btn-danger" href="{% url 'delete-address' address.id %}">Delete</a>
+                                                <td>{{address.street_address}}</td>
+                                                <td>{{address.apartment_address}}</td>
+                                                <td>{{address.city}}</td>
+                                                <td>{{address.phone}}</td>
+                                                {% if address.default %}
+                                                <td>
+                                                    <span style="font-size:15px;" class="bootstrap badge badge-pill badge-primary badge-lg">Default</span>
+                                                </td>
+                                                {% else %}
+                                                <td>
+                                                    <div class="gl-text"><a class="address-book-edit btn--e-transparent-platinum-b-2" href="{% url 'set-default-address' address.id %}">set default</a></div>
+                                                </td>
+                                                {% endif %}
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div>
+
+                                <a class="dash__custom-link btn--e-brand-b-2" href="{% url 'add-address' request.user.id %}"><i class="fa fa-plus u-s-m-r-8"></i>
+
+                                    <span>Add New Address</span></a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+ </section>
+    
+    {% endblock %}

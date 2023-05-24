@@ -1,0 +1,50 @@
+{% load static %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+  <body>
+  <main class="d-flex align-items-center min-vh-100 py-3 py-md-0">
+    <div class="container">
+      <div class="container">
+        <div class="card login-card">
+          <div class="row no-gutters">
+            <div class="col-md-7">
+              <img src="{% static 'images/slider/slider-img-3.jpg' %}" alt="login" class="login-card-img">
+            </div>
+            <div class="col-md-5">
+              <div class="card-body">
+                <p class="login-card-description"d="log" >AFROSHOP</p>
+
+                <form class="login" method="POST" action="{% url 'account_login' %}">
+                  {% csrf_token %}
+                  {{ form|crispy }}
+                  {% if redirect_field_value %}
+                  <div class="form-group">
+                  <input class="form-control" type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+                  </div>
+                  {% endif %}
+                  <a class="forgot-password-link" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
+                  <p class="login-card-footer-text">Don't have an account? <a href="{% url 'account_signup' %}" class="text-reset">Register</a></p>
+                  <button class="btn btn-block login-btn mb-4" type="submit">{% trans "Login" %}</button>
+                </form>
+          </div>
+        </div>
+        </div>
+      </div>
+      </div>
+      </div>
+  </main>
+  </body>
+
+{% endblock %}
+
+
+
+

@@ -1,0 +1,158 @@
+{% extends  'app/dashboard_link.html' %}
+{% load static %}
+
+{% block content %}
+
+<section style="margin-bottom:200px;" id="contact" class="section-wrapper contact-section" data-stellar-background-ratio="0.5">
+	<div class="parallax-overlay"></div>
+		<div class="container">
+
+				<div class="contact-details">
+					<!-- Contact Form -->
+					<div class="contact-form wow bounceInRight">
+						<div class="col-md-12">
+                            <div class="col-md-6 custom-sec-img wow fadeInDown">
+                                <img src="{{item.image.url}}" alt="Custom Image">
+                            </div>
+                      <div class="dash__box dash__box--shadow dash__box--radius dash__box--bg-white col-md-6">
+                      
+                                        <div style="margin-top:20px;margin-bottom:20px;" class="container">
+                                            <p>{{item.name}}</p>
+                                            <hr>
+                                            {% if item.discount_price %}
+                                            <span style="display:inline-block; text-decoration: line-through;"><h5>₽{{item.price}}</h5></span>
+                                            <p style="display:inline-block; margin-left:5px;" id="price">₽{{item.discount_price}}</p>
+                                            <hr>
+                                            {% else %}
+                                            <p id="price">₽{{item.price}}</p>
+                                            <hr>
+                                            {% endif %}
+                                            <p><b>{{item.description|safe}}</b></p>
+                                            <hr>
+                                            {% if item.size %}
+                                            <p>{{item.size}}</p>
+                                            <hr>
+                                            {% endif %}
+                                            <div class="rating">
+                                              {% if item.get_average_rating > 0 %}
+                                                  {% with rating=item.get_average_rating %}
+                                                      {% for i in "12345" %}
+                                                          {% if i|add:"-1" < rating %}
+                                                              <i style="color:#F2B600" class="fa fa-star"></i>
+                                                          {% else %}
+                                                              <i style="color:#F2B600" class="fa fa-star-o"></i>
+                                                          {% endif %}
+                                                      {% endfor %}
+                                                      <span class="num-ratings">({{ item.get_review_count }})</span>
+                                                  {% endwith %}
+                                              {% else %}
+                                                  <span class="no-ratings">No ratings yet</span>
+                                              {% endif %}
+                                          </div>
+                                          <hr>
+                                          Category:
+                                          {% for cat in item.category.all %}
+                                          <strong><span>{{ cat.name }}</span></strong>{% if not forloop.last %}, {% endif %}
+                                        {% endfor %}
+                                          <hr>
+                                          {% if item.color.exists %}
+                                          Color:
+                                          {% for col in item.color.all %}
+                                          <strong><span>{{ col.color }}</span></strong>{% if not forloop.last %}, {% endif %}
+                                        {% endfor %}
+                                        <hr>
+                                        {% endif %}
+                                            {% if item.out_of_stock == True %}
+                                            <div align="center">
+                                              <label>Currently out of stock</label>
+                                            </div>
+                                          {% else %}
+                                            <a class="bootstrap btn btn-success" href="{% url 'add-item' item.slug %}">Add</a>
+                                            <a class="bootstrap btn btn-danger" href="{% url 'remove-item' item.slug %}">Remove</a>
+                                            {% endif %}
+                                            <hr>
+                                        
+                                          </div>
+                                </div>
+					</div>
+
+
+          <div class="container bootstrap">
+            <div class="row">
+                <div class="col-lg-12 col-md-10 mx-auto">
+        
+                    <h4 class="mb-4">Item Reviews</h4>
+        
+                    {% if reviews %}
+                    {% for review in reviews %}
+                    <div class="card mb-4 bootstrap container">
+                        <div class="card-body">
+                          <br>
+                            <h5 class="card-title">{{ review.user.username }}</h5>
+                            <p class="card-text">{{ review.comment }}</p>
+                            <p class="card-text"><small class="text-muted">{{ review.created_at }}</small></p>
+                            <div class="rating">
+                                {% with rating=review.rating %}
+                                  {% for i in "12345" %}
+                                    {% if i|add:"-1" < rating %}
+                                      <i style="color:#F2B600" class="fa fa-star"></i>
+                                    {% else %}
+                                      <i style="color:#F2B600" class="fa fa-star-o"></i>
+                                    {% endif %}
+                                  {% endfor %}
+                                {% endwith %}
+                            </div>
+                          <br>
+                          {% if request.user == review.user %}
+                          <a href="{% url 'delete-review' review.id %}" class="bootstrap btn btn-sm btn-danger">Delete</a>
+                          <br>
+                          {% endif %}
+                        </div>
+                        <br>
+                    </div>
+                    <hr>
+                    {% endfor %}
+                    {% endif %}
+
+                    <br>
+                    <br>
+
+                    {% if user_review %}
+                    <h5 class="mb-4">You already left a review</h5>
+                    {% else %}
+                    <h5 class="mb-4">Leave a Review</h5>
+        
+                    <form method="POST" action=".">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="comment">Comment:</label>
+                            <textarea class="form-control" id="comment" name="comment" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="rating">Rating:</label>
+                            <select class="form-control" id="rating" name="rating" required>
+                                <option value="">-- Select rating --</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                    {% endif %}
+        
+                </div>
+            </div>
+        </div>
+        
+          
+					</div>
+
+			</div>
+		</div>
+	</div>
+	</section>
+
+	{% endblock %}

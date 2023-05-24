@@ -1,0 +1,58 @@
+{% extends 'app/dashboard_link.html' %}
+{% load static %}
+{% block content %}
+       
+<section  style="margin-top: 100px; margin-bottom:100px;"> 
+    <div class="u-s-p-b-60">
+        <div class="section__content">
+            <div class="dash">
+                <div class="container">
+                    <div class="row">
+                        {% include 'app/dash-include.html' %}                    
+                        <div class="col-lg-9 col-md-12">
+                            <div class="dash__box dash__box--shadow dash__box--radius dash__box--bg-white">
+                                <div class="dash__pad-2">
+                                    <h1 class="dash__h1 u-s-m-b-14">Edit Address</h1>
+
+                                    <span class="dash__text u-s-m-b-30">Please fill in valid details</span>
+                                    <form method="POST" action="." class="dash-address-manipulation">
+                                        {% csrf_token %}
+                                        <div class="gl-inline">
+                                            <div class="u-s-m-b-30">
+
+                                                <label class="gl-label" for="address-fname">Street Address *</label>
+
+                                                {{form.street_address}}
+                                            </div>
+                                            <div class="u-s-m-b-30">
+
+                                                <label class="gl-label" for="address-lname">Apartment Number *</label>
+
+                                                {{form.apartment_address}}
+                                        </div>
+                                    </div>
+                                            <div class="u-s-m-b-30">
+
+                                                <label class="gl-label" for="address-phone">Phone *</label>
+
+                                                {{form.phone}}
+                                            </div>
+                                            <div class="u-s-m-b-30">
+
+                                                <label class="gl-label" for="address-street"> City *</label>
+
+                                               {{form.city}}
+                                        </div>
+                                        <button class="btn btn--e-brand-b-2" type="submit">SAVE</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    </section>
+
+{% endblock %}
